@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Forecast</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #3498db; /* Blue background color */
+    }
+    .center-form {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 80vh;
+    }
+    /* Customize the color of the navbar */
+    .navbar {
+      background-color: #2980b9; /* Darker blue color */
+    }
+    /* Center the weather information */
+    .weather-info {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="#">Global Weather Forecast</a>
+  </div>
+</nav>
+
+<div class="container">
+    <div class="center-form">
+        <form action="/weather" method="post">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="locationInput" name="location" placeholder="Enter Country or City">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if error_message %}
+<div class="container">
+    <div class="alert alert-danger" role="alert">
+        {{ error_message }}
+    </div>
+</div>
+{% elif weather %}
+<div class="container">
+    <div class="weather-info">
+        <h2>{{ weather.name }}'s Forecast</h2>
+        <p>Weather: {{ weather.weather[0].description }}</p>
+        <p>Temperature: {{ weather.main.temp }} &deg;C</p>
+        <p>Feels Like: {{ weather.main.feels_like }} &deg;C</p>
+        <p>Lowest Temperature: {{ weather.main.temp_min }} &deg;C</p>
+        <p>Highest Temperature: {{ weather.main.temp_max }} &deg;C</p>
+        <p>Humidity: {{ weather.main.humidity }}%</p>
+    </div>
+</div>
+{% endif %}
+
+</body>
+</html>
