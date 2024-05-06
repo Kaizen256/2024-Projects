@@ -11,12 +11,12 @@ np.random.seed(RANDOM_SEED)
 N = 100 # number of points per class
 D = 2 # dimensionality
 K = 3 # number of classes
-X = np.zeros((N*K,D)) # data matrix (each row = single example)
-y = np.zeros(N*K, dtype='uint8') # class labels
+X = np.zeros((N*K,D))
+y = np.zeros(N*K, dtype='uint8')
 for j in range(K):
   ix = range(N*j,N*(j+1))
-  r = np.linspace(0.0,1,N) # radius
-  t = np.linspace(j*4,(j+1)*4,N) + np.random.randn(N)*0.2 # theta
+  r = np.linspace(0.0,1,N)
+  t = np.linspace(j*4,(j+1)*4,N) + np.random.randn(N)*0.2
   X[ix] = np.c_[r*np.sin(t), r*np.cos(t)]
   y[ix] = j
 plt.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap=plt.cm.RdYlBu)
@@ -84,33 +84,25 @@ for epoch in range(epochs):
         print(f"Epoch: {epoch} | Loss: {loss:.5f}, Acc: {acc:.2f}% | Test Loss: {test_loss:.5f}, Test Acc: {test_acc:.2f}%")
 
 def plot_decision_boundary(model, X, y):
-  
-    # Put everything to CPU (works better with NumPy + Matplotlib)
     model.to("cpu")
     X, y = X.to("cpu"), y.to("cpu")
 
-    # Source - https://madewithml.com/courses/foundations/neural-networks/ 
-    # (with modifications)
     x_min, x_max = X[:, 0].min() - 0.1, X[:, 0].max() + 0.1
     y_min, y_max = X[:, 1].min() - 0.1, X[:, 1].max() + 0.1
     xx, yy = np.meshgrid(np.linspace(x_min, x_max, 101), 
                          np.linspace(y_min, y_max, 101))
 
-    # Make features
     X_to_pred_on = torch.from_numpy(np.column_stack((xx.ravel(), yy.ravel()))).float()
 
-    # Make predictions
     model.eval()
     with torch.inference_mode():
         y_logits = model(X_to_pred_on)
 
-    # Test for multi-class or binary and adjust logits to prediction labels
     if len(torch.unique(y)) > 2:
-        y_pred = torch.softmax(y_logits, dim=1).argmax(dim=1) # mutli-class
+        y_pred = torch.softmax(y_logits, dim=1).argmax(dim=1)
     else: 
-        y_pred = torch.round(torch.sigmoid(y_logits)) # binary
+        y_pred = torch.round(torch.sigmoid(y_logits))
     
-    # Reshape preds and plot
     y_pred = y_pred.reshape(xx.shape).detach().numpy()
     plt.contourf(xx, yy, y_pred, cmap=plt.cm.RdYlBu, alpha=0.7)
     plt.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap=plt.cm.RdYlBu)
