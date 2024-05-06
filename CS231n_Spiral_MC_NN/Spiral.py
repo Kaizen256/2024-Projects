@@ -1,82 +1,87 @@
-import torch
-from torch import nn
-from sklearn.model_selection import train_test_split
-import pandas as pd
-import matplotlib.pyplot as plt
-from sklearn.datasets import make_moons
+# Code for creating a spiral dataset from CS231n
 import numpy as np
+import matplotlib.pyplot as plt
+import torch
+from sklearn.model_selection import train_test_split
+from torch import nn
 
 device = "cuda"
-RS = 42
-
-X, y = make_moons(n_samples=3000, shuffle=True, noise=0.07, random_state=RS)
+RANDOM_SEED = 42
+np.random.seed(RANDOM_SEED)
+N = 100 # number of points per class
+D = 2 # dimensionality
+K = 3 # number of classes
+X = np.zeros((N*K,D)) # data matrix (each row = single example)
+y = np.zeros(N*K, dtype='uint8') # class labels
+for j in range(K):
+  ix = range(N*j,N*(j+1))
+  r = np.linspace(0.0,1,N) # radius
+  t = np.linspace(j*4,(j+1)*4,N) + np.random.randn(N)*0.2 # theta
+  X[ix] = np.c_[r*np.sin(t), r*np.cos(t)]
+  y[ix] = j
+plt.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap=plt.cm.RdYlBu)
+plt.show()
 
 X = torch.from_numpy(X).type(torch.float)
-y = torch.from_numpy(y).type(torch.float)
+y = torch.from_numpy(y).type(torch.LongTensor)
 
 X_train, X_test, y_train, y_test = train_test_split(X, 
                                                     y, 
-                                                    test_size=0.2,
-                                                    random_state=42)
-
-plt.figure(figsize=(8, 6))
-plt.scatter(X_train[:, 0], X_train[:, 1], c=y_train, cmap=plt.cm.RdBu, marker='o', edgecolors='k', label='Train')
-plt.scatter(X_test[:, 0], X_test[:, 1], c=y_test, cmap=plt.cm.RdBu, marker='s', edgecolors='k', label='Test')
-plt.title('Moons Dataset')
-plt.xlabel('Feature 1')
-plt.ylabel('Feature 2')
-plt.legend()
-plt.grid(True)
-plt.show()
-
-class MoonModelV0(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.layer_1 = nn.Linear(in_features=2, out_features=16)
-        self.layer_2 = nn.Linear(in_features=16, out_features=16)
-        self.layer_3 = nn.Linear(in_features=16, out_features=1)
-        self.tanh = nn.Tanh()
-
-    def forward(self, x):
-        return self.layer_3(self.tanh(self.layer_2(self.tanh(self.layer_1(x)))))
-
-model = MoonModelV0().to(device)
-criterion = nn.BCEWithLogitsLoss()
-optimizer = torch.optim.SGD(params=model.parameters(), lr=0.3)
+                                                    test_size=0.3,
+                                                    random_state=RANDOM_SEED)
 
 def accuracy_fn(y_true, y_pred):
     correct = torch.eq(y_true, y_pred).sum().item() # torch.eq() calculates where two tensors are equal
     acc = (correct / len(y_pred)) * 100 
     return acc
 
-epochs = 1000
+class SpiralModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.linear_layer_stack = nn.Sequential(
+            nn.Linear(in_features=2, out_features=10),
+            nn.ReLU(),
+            nn.Linear(in_features=10, out_features=10),
+            nn.ReLU(),
+            nn.Linear(in_features=10, out_features=K)
+        )
+    def forward(self, x):
+        return self.linear_layer_stack(x)
+
+model = SpiralModel().to(device)
+
+loss_fn = nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(model.parameters(),
+                            lr=0.05)
+
+torch.manual_seed(42)
+epochs = 151
+
 X_train, y_train = X_train.to(device), y_train.to(device)
 X_test, y_test = X_test.to(device), y_test.to(device)
 
 for epoch in range(epochs):
     model.train()
-    
-    y_logits = model(X_train).squeeze()
-    y_pred = torch.round(torch.sigmoid(y_logits))
+    y_logits = model(X_train)
+    y_pred = torch.softmax(y_logits, dim=1).argmax(dim=1)
 
-    loss = criterion(y_logits,
-                     y_train)
+    loss = loss_fn(y_logits, y_train)
     acc = accuracy_fn(y_true=y_train,
                       y_pred=y_pred)
+    
     optimizer.zero_grad()
     loss.backward()
     optimizer.step()
-
     model.eval()
     with torch.inference_mode():
-        test_logits = model(X_test).squeeze()
-        test_pred = torch.round(torch.sigmoid(test_logits))
-        test_loss = criterion(test_logits,
-                            y_test)
-        test_acc = accuracy_fn(y_true=y_test,
+        test_logits = model(X_test)
+        test_pred = torch.softmax(test_logits, dim=1).argmax(dim=1)
+        test_loss = loss_fn(test_logits, y_test)
+        test_acc = accuracy_fn(y_true=y_test, 
                                y_pred=test_pred)
-        if epoch % 100 == 0:
-            print(f"Epoch: {epoch} | Loss: {loss:.5f}, Accuracy: {acc:.2f}% | Test loss: {test_loss:.5f}, Test acc: {test_acc:.2f}%")
+
+    if epoch % 10 == 0:
+        print(f"Epoch: {epoch} | Loss: {loss:.5f}, Acc: {acc:.2f}% | Test Loss: {test_loss:.5f}, Test Acc: {test_acc:.2f}%")
 
 def plot_decision_boundary(model, X, y):
   
@@ -111,8 +116,7 @@ def plot_decision_boundary(model, X, y):
     plt.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap=plt.cm.RdYlBu)
     plt.xlim(xx.min(), xx.max())
     plt.ylim(yy.min(), yy.max())
-
-
+     
 plt.figure(figsize=(12, 6))
 plt.subplot(1, 2, 1)
 plt.title("Train")

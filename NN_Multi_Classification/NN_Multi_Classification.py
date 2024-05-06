@@ -3,6 +3,7 @@ from torch import nn
 import matplotlib.pyplot as plt
 from sklearn.datasets import make_blobs
 from sklearn.model_selection import train_test_split
+import numpy as np
 
 NUM_CLASSES = 4
 NUM_FEATURES = 2
