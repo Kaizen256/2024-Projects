@@ -81,7 +81,7 @@ model = Convolutional(input_shape=1,
 
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(params=model.parameters(), 
-                             lr=0.05)
+                             lr=0.03)
 
 def train_step(model: torch.nn.Module,
                data_loader: torch.utils.data.DataLoader,
@@ -151,7 +151,7 @@ def print_train_time(start: float, end: float, device: torch.device = None):
     return total_time
 train_time_start_model_2 = timer()
 
-epochs = 75
+epochs = 40
 for epoch in range(epochs):
     print(f"Epoch: {epoch}\n---------")
     train_step(data_loader=train_dataloader, 
@@ -180,11 +180,10 @@ MODEL_PATH = Path("models")
 MODEL_PATH.mkdir(parents=True, exist_ok=True)
 
 # 2. Create model save path 
-MODEL_NAME = "CNN01.path"
+MODEL_NAME = "CNN02.path"
 MODEL_SAVE_PATH = MODEL_PATH / MODEL_NAME
 
 # 3. Save the model state dict 
 print(f"Saving model to: {MODEL_SAVE_PATH}")
-torch.save(obj=model.state_dict(), # only saving the state_dict() only saves the models learned parameters
+torch.save(model, # only saving the state_dict() only saves the models learned parameters
            f=MODEL_SAVE_PATH)
-
