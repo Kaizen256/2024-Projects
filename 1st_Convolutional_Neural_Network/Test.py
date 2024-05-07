@@ -6,53 +6,39 @@ from torchvision.transforms import ToTensor
 import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 from CNN import Convolutional
+from torchvision import datasets, transforms
 
-model_path = "models/CNN02.path"
+device = "cuda"
+model_path = "models/CNN02.pth"
 model = torch.load(model_path)
-print(type(model))
+model.eval()
 
-train_data = datasets.FashionMNIST(
-    root="data",
-    train=True,
-    download=True,
-    transform=ToTensor(),
-    target_transform=None
-)
+transform = transforms.Compose([
+    transforms.ToTensor(),
+])
 test_data = datasets.FashionMNIST(
     root="data",
     train=False, # get test data
     download=True,
     transform=ToTensor()
 )
-
-class_names = train_data.classes
-train_dataloader = DataLoader(train_data,
-                              batch_size=32,
-                              shuffle=True)
-
+class_names = test_data.classes
 test_dataloader = DataLoader(test_data,
                               batch_size=32,
                               shuffle=False)
 
-def make_predictions(model: torch.nn.Module, data: list, device: torch.device = "cuda"):
+def make_predictions(model, data):
     pred_probs = []
-    model.eval()
-    with torch.inference_mode():
+    with torch.no_grad():
         for sample in data:
-            # Prepare sample
-            sample = torch.unsqueeze(sample, dim=0).to(device) # Add an extra dimension and send sample to device
-
-            # Forward pass (model outputs raw logit)
+            sample = sample.to(device) if torch.cuda.is_available() else sample
             pred_logit = model(sample)
-
-            # Get prediction probability (logit -> prediction probability)
-            pred_prob = torch.softmax(pred_logit.squeeze(), dim=0) # note: perform softmax on the "logits" dimension, not "batch" dimension (in this case we have a batch size of 1, so can perform on dim=0)
-
-            # Get pred_prob off GPU for further calculations
+            pred_prob = torch.softmax(pred_logit, dim=1)
             pred_probs.append(pred_prob.cpu())
-            
-    # Stack the pred_probs to turn list into a tensor
-    return torch.stack(pred_probs)
+    return torch.cat(pred_probs, dim=0)
+
+pred_probs = make_predictions(model, test_dataloader)
+pred_classes = pred_probs.argmax(dim=1)
 
 import random
 random.seed(42)
@@ -70,26 +56,17 @@ pred_classes = pred_probs.argmax(dim=1)
 plt.figure(figsize=(9, 9))
 nrows = 3
 ncols = 3
-for i, sample in enumerate(test_samples):
-  # Create a subplot
-  plt.subplot(nrows, ncols, i+1)
-
-  # Plot the target image
-  plt.imshow(sample.squeeze(), cmap="gray")
-
-  # Find the prediction label (in text form, e.g. "Sandal")
-  pred_label = class_names[pred_classes[i]]
-
-  # Get the truth label (in text form, e.g. "T-shirt")
-  truth_label = class_names[test_labels[i]] 
-
-  # Create the title text of the plot
-  title_text = f"Pred: {pred_label} | Truth: {truth_label}"
-  
-  # Check for equality and change title colour accordingly
-  if pred_label == truth_label:
-      plt.title(title_text, fontsize=10, c="g") # green text if correct
-  else:
-      plt.title(title_text, fontsize=10, c="r") # red text if wrong
-  plt.axis(False)
-  plt.show()
+for i, (sample, label) in enumerate(test_data):
+    if i >= 9:
+        break
+    plt.subplot(nrows, ncols, i+1)
+    plt.imshow(sample.squeeze(), cmap="gray")
+    pred_label = class_names[pred_classes[i]]
+    truth_label = class_names[label]
+    title_text = f"Pred: {pred_label} | Truth: {truth_label}"
+    if pred_label == truth_label:
+        plt.title(title_text, fontsize=10, c="g")  # green text if correct
+    else:
+        plt.title(title_text, fontsize=10, c="r")  # red text if wrong
+    plt.axis(False)
+plt.show()

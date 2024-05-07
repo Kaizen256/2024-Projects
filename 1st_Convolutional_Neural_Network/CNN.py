@@ -151,7 +151,7 @@ def print_train_time(start: float, end: float, device: torch.device = None):
     return total_time
 train_time_start_model_2 = timer()
 
-epochs = 40
+epochs = 5
 for epoch in range(epochs):
     print(f"Epoch: {epoch}\n---------")
     train_step(data_loader=train_dataloader, 
