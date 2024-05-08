@@ -5,6 +5,7 @@ from torchvision import datasets
 from torchvision.transforms import ToTensor
 import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
+import sys
 
 train_data = datasets.FashionMNIST(
     root="data",
@@ -151,8 +152,63 @@ def print_train_time(start: float, end: float, device: torch.device = None):
     return total_time
 train_time_start_model_2 = timer()
 
-epochs = 5
+def save_checkpoint(state, filename="CNN_Checkpoint.pth.tar"):
+    print("Checkpoint")
+    torch.save(state, filename)
+
+def load_checkpoint(checkpoint):
+    print("Loading Checkpoint")
+    model.load_state_dict(checkpoint['state_dict'])
+    optimizer.load_state_dict(checkpoint['optimizer'])
+
+Load_model = True #LOAD MODEL OR CREATE A NEW ONE
+prediction_shit = True # MAKE PREDICTIONS OR NAH
+epochs = 31
+
+if Load_model:
+    load_checkpoint(torch.load("CNN_Checkpoint.pth.tar"))
+if prediction_shit:
+    def make_predictions(model: torch.nn.Module, data: list, device: torch.device = "cuda"):
+        pred_probs = []
+        model.eval()
+        with torch.inference_mode():
+            for sample in data:
+                sample = torch.unsqueeze(sample, dim=0).to(device)
+                pred_logit = model(sample)
+                pred_prob = torch.softmax(pred_logit.squeeze(), dim=0)
+                pred_probs.append(pred_prob.cpu())
+        return torch.stack(pred_probs)
+    import random
+    test_samples = []
+    test_labels = []
+    for sample, label in random.sample(list(test_data), k=25):
+        test_samples.append(sample)
+        test_labels.append(label)
+    pred_probs= make_predictions(model=model, 
+                             data=test_samples)
+    pred_classes = pred_probs.argmax(dim=1)
+    plt.figure(figsize=(15, 15))
+    nrows = 5
+    ncols = 5
+    for i, sample in enumerate(test_samples):
+        plt.subplot(nrows, ncols, i+1)
+        plt.imshow(sample.squeeze(), cmap="gray")
+        pred_label = class_names[pred_classes[i]]
+        truth_label = class_names[test_labels[i]] 
+        title_text = f"Pred: {pred_label} | Truth: {truth_label}"
+        if pred_label == truth_label:
+            plt.title(title_text, fontsize=10, c="g") # green text if correct
+        else:
+            plt.title(title_text, fontsize=10, c="r") # red text if wrong
+    plt.axis(False)
+    plt.tight_layout(pad=1.5)
+    plt.show()
+    sys.exit()
+        
 for epoch in range(epochs):
+    if epoch % 10 == 0 and Load_model==True:
+        checkpoint = {'state_dict' : model.state_dict(), 'optimizer': optimizer.state_dict()}
+        save_checkpoint(checkpoint)
     print(f"Epoch: {epoch}\n---------")
     train_step(data_loader=train_dataloader, 
         model=model, 
@@ -172,18 +228,3 @@ train_time_end_model_2 = timer()
 total_train_time_model_2 = print_train_time(start=train_time_start_model_2,
                                            end=train_time_end_model_2,
                                            device="cuda")
-
-from pathlib import Path
-
-# 1. Create models directory 
-MODEL_PATH = Path("models")
-MODEL_PATH.mkdir(parents=True, exist_ok=True)
-
-# 2. Create model save path 
-MODEL_NAME = "CNN02.path"
-MODEL_SAVE_PATH = MODEL_PATH / MODEL_NAME
-
-# 3. Save the model state dict 
-print(f"Saving model to: {MODEL_SAVE_PATH}")
-torch.save(model, # only saving the state_dict() only saves the models learned parameters
-           f=MODEL_SAVE_PATH)
