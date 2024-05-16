@@ -1,11 +1,9 @@
-def fizBuzz(n):
-    for i in range(1, n + 1):
-        if i % 3 == 0 and i % 5 == 0:
-            print("FizzBuzz")
-        elif i % 3 == 0:
-            print("Fizz")
-        elif i % 5 == 0:
-            print("Buzz")
-        else: print(i)
-        
-fizBuzz(100)
+import mlflow
+
+mlflow.set_tracking_uri("http://127.0.0.1:5000")
+
+mlflow.set_experiment("/check-localhost-connection")
+
+with mlflow.start_run():
+    mlflow.log_metric("foo", 1)
+    mlflow.log_metric("bar", 2)
