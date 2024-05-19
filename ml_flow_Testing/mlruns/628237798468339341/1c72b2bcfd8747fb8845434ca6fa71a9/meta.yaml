@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/628237798468339341/1c72b2bcfd8747fb8845434ca6fa71a9/artifacts
+end_time: 1716091189517
+entry_point_name: ''
+experiment_id: '628237798468339341'
+lifecycle_stage: active
+run_id: 1c72b2bcfd8747fb8845434ca6fa71a9
+run_name: intrigued-kite-856
+run_uuid: 1c72b2bcfd8747fb8845434ca6fa71a9
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716091183783
+status: 3
+tags: []
+user_id: rowes
