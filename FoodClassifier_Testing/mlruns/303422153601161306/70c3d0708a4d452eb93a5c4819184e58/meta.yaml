@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/303422153601161306/70c3d0708a4d452eb93a5c4819184e58/artifacts
+end_time: 1716094088428
+entry_point_name: ''
+experiment_id: '303422153601161306'
+lifecycle_stage: active
+run_id: 70c3d0708a4d452eb93a5c4819184e58
+run_name: clean-bug-81
+run_uuid: 70c3d0708a4d452eb93a5c4819184e58
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716093945738
+status: 3
+tags: []
+user_id: rowes

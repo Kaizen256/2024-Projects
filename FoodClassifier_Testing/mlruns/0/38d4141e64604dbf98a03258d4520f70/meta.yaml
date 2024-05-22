@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/38d4141e64604dbf98a03258d4520f70/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 38d4141e64604dbf98a03258d4520f70
+run_name: calm-tern-796
+run_uuid: 38d4141e64604dbf98a03258d4520f70
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716091879290
+status: 1
+tags: []
+user_id: rowes

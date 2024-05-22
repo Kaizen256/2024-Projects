@@ -1,0 +1,6 @@
+artifact_location: mlflow-artifacts:/192865275456242387
+creation_time: 1716094261398
+experiment_id: '192865275456242387'
+last_update_time: 1716094261398
+lifecycle_stage: active
+name: Testing with ten epochs

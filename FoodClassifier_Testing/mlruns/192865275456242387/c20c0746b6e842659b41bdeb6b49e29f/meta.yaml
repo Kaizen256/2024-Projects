@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/192865275456242387/c20c0746b6e842659b41bdeb6b49e29f/artifacts
+end_time: 1716362823911
+entry_point_name: ''
+experiment_id: '192865275456242387'
+lifecycle_stage: active
+run_id: c20c0746b6e842659b41bdeb6b49e29f
+run_name: rumbling-shrimp-398
+run_uuid: c20c0746b6e842659b41bdeb6b49e29f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716361053539
+status: 3
+tags: []
+user_id: rowes

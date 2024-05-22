@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/192865275456242387/a53f4df2f1474bfc9afbc328789e2c18/artifacts
+deleted_time: 1716094427892
+end_time: 1716094420966
+entry_point_name: ''
+experiment_id: '192865275456242387'
+lifecycle_stage: deleted
+run_id: a53f4df2f1474bfc9afbc328789e2c18
+run_name: wise-bird-155
+run_uuid: a53f4df2f1474bfc9afbc328789e2c18
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716094261684
+status: 3
+tags: []
+user_id: rowes

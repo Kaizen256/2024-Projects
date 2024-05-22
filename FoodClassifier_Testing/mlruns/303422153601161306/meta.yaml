@@ -1,0 +1,6 @@
+artifact_location: mlflow-artifacts:/303422153601161306
+creation_time: 1716093945513
+experiment_id: '303422153601161306'
+last_update_time: 1716093945513
+lifecycle_stage: active
+name: Testing with one epoch
