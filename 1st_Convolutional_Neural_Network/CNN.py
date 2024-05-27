@@ -7,6 +7,13 @@ import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 import sys
 
+if torch.cuda.is_available():
+    device = torch.device('cuda')
+    print("GPU is available. Using GPU for computation.")
+else:
+    device = torch.device('cpu')
+    print("No GPU available. Using CPU for computation.")
+
 train_data = datasets.FashionMNIST(
     root="data",
     train=True,
@@ -78,7 +85,7 @@ class Convolutional(nn.Module):
     
 model = Convolutional(input_shape=1,
                         hidden_units=10,
-                        output_shape=len(class_names)).to("cuda")
+                        output_shape=len(class_names)).to(device)
 
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(params=model.parameters(), 
@@ -89,7 +96,7 @@ def train_step(model: torch.nn.Module,
                loss_fn: torch.nn.Module,
                optimizer: torch.optim.Optimizer,
                accuracy_fn,
-               device: torch.device = "cuda"):
+               device: torch.device = device):
     train_loss, train_acc = 0, 0
     model.to(device)
     for batch, (X, y) in enumerate(data_loader):
@@ -112,7 +119,7 @@ def test_step(data_loader: torch.utils.data.DataLoader,
               model: torch.nn.Module,
               loss_fn: torch.nn.Module,
               accuracy_fn,
-              device: torch.device = "cuda"):
+              device: torch.device = device):
     test_loss, test_acc = 0, 0
     model.to(device)
     model.eval()
@@ -168,7 +175,7 @@ epochs = 31
 if Load_model:
     load_checkpoint(torch.load("CNN_Checkpoint.pth.tar"))
 if prediction_shit:
-    def make_predictions(model: torch.nn.Module, data: list, device: torch.device = "cuda"):
+    def make_predictions(model: torch.nn.Module, data: list, device: torch.device = device):
         pred_probs = []
         model.eval()
         with torch.inference_mode():
@@ -215,16 +222,16 @@ for epoch in range(epochs):
         loss_fn=loss_fn,
         optimizer=optimizer,
         accuracy_fn=accuracy_fn,
-        device="cuda"
+        device=device
     )
     test_step(data_loader=test_dataloader,
         model=model,
         loss_fn=loss_fn,
         accuracy_fn=accuracy_fn,
-        device="cuda"
+        device=device
     )
 
 train_time_end_model_2 = timer()
 total_train_time_model_2 = print_train_time(start=train_time_start_model_2,
                                            end=train_time_end_model_2,
-                                           device="cuda")
+                                           device=device)

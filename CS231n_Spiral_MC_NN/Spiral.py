@@ -5,7 +5,13 @@ import torch
 from sklearn.model_selection import train_test_split
 from torch import nn
 
-device = "cuda"
+if torch.cuda.is_available():
+    device = torch.device('cuda')
+    print("GPU is available. Using GPU for computation.")
+else:
+    device = torch.device('cpu')
+    print("No GPU available. Using CPU for computation.")
+    
 RANDOM_SEED = 42
 np.random.seed(RANDOM_SEED)
 N = 100 # number of points per class

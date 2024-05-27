@@ -6,6 +6,13 @@ from torchvision.transforms import ToTensor
 import matplotlib.pyplot as plt
 from helper_functions import accuracy_fn
 
+if torch.cuda.is_available():
+    device = torch.device('cuda')
+    print("GPU is available. Using GPU for computation.")
+else:
+    device = torch.device('cpu')
+    print("No GPU available. Using CPU for computation.")
+
 train_data = datasets.FashionMNIST(
     root="data",
     train=True,
@@ -152,7 +159,7 @@ class FashionMNISTModelV1(nn.Module):
 torch.manual_seed(42)
 model_1 = FashionMNISTModelV1(input_shape=784,
                               hidden_units=10,
-                              output_shape=len(class_names)).to("cuda")
+                              output_shape=len(class_names)).to(device)
 
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(params=model_1.parameters(), 
@@ -163,7 +170,7 @@ def train_step(model: torch.nn.Module,
                loss_fn: torch.nn.Module,
                optimizer: torch.optim.Optimizer,
                accuracy_fn,
-               device: torch.device = "cuda"):
+               device: torch.device = device):
     train_loss, train_acc = 0, 0
     model.to(device)
     for batch, (X, y) in enumerate(data_loader):
@@ -188,7 +195,7 @@ def test_step(data_loader: torch.utils.data.DataLoader,
               model: torch.nn.Module,
               loss_fn: torch.nn.Module,
               accuracy_fn,
-              device: torch.device = "cuda"):
+              device: torch.device = device):
     test_loss, test_acc = 0, 0
     model.to(device)
     model.eval() # put model in eval mode
@@ -226,14 +233,14 @@ for epoch in range(epochs):
 train_time_end_on_gpu = timer()
 total_train_time_model_1 = print_train_time(start=train_time_start_on_gpu,
                                             end=train_time_end_on_gpu,
-                                            device="cuda")
+                                            device=device)
 
 torch.manual_seed(42)
 def eval_model(model: torch.nn.Module, 
                data_loader: torch.utils.data.DataLoader, 
                loss_fn: torch.nn.Module, 
                accuracy_fn, 
-               device: torch.device = "cuda"):
+               device: torch.device = device):
     loss, acc = 0, 0
     model.eval()
     with torch.inference_mode():
@@ -254,6 +261,6 @@ def eval_model(model: torch.nn.Module,
 # Calculate model 1 results with device-agnostic code 
 model_1_results = eval_model(model=model_1, data_loader=test_dataloader,
     loss_fn=loss_fn, accuracy_fn=accuracy_fn,
-    device="cuda"
+    device=device
 )
 print(model_1_results)
