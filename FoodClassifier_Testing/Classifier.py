@@ -161,46 +161,5 @@ def main():
             for key, values in results.items():
                 mlflow.log_metric(key, values[-1])
 
-            # Optional: save the model locally
-            torch.save(model.state_dict(), "model.pth")
-    
-    num2 = True
-    if num2 == True:
-        data_10_percent_path = download_data(source="https://github.com/mrdbourke/pytorch-deep-learning/raw/main/data/pizza_steak_sushi.zip",
-                                     destination="pizza_steak_sushi")
-        data_20_percent_path = download_data(source="https://github.com/mrdbourke/pytorch-deep-learning/raw/main/data/pizza_steak_sushi_20_percent.zip",
-                                     destination="pizza_steak_sushi_20_percent")
-        train_dir_10_percent = data_10_percent_path / "train"
-        train_dir_20_percent = data_20_percent_path / "train"
-
-        # Setup testing directory paths (note: use the same test dataset for both to compare the results)
-        test_dir = data_10_percent_path / "test"
-
-        normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                                         std=[0.229, 0.224, 0.225])
-        
-        simple_transform = transforms.Compose([
-            transforms.Resize((224, 224)),
-            transforms.ToTensor(),
-            normalize
-        ])
-
-        BATCH_SIZE = 32
-
-        # Create 10% training and test DataLoaders
-        train_dataloader_10_percent, test_dataloader, class_names = data_setup.create_dataloaders(train_dir=train_dir_10_percent,
-            test_dir=test_dir, 
-            transform=simple_transform,
-            batch_size=BATCH_SIZE
-        )
-
-        # Create 20% training and test data DataLoders
-        train_dataloader_20_percent, test_dataloader, class_names = data_setup.create_dataloaders(train_dir=train_dir_20_percent,
-            test_dir=test_dir,
-            transform=simple_transform,
-            batch_size=BATCH_SIZE
-        )
-
-
 if __name__ == "__main__":
-    main()Fcreate
+    main()
