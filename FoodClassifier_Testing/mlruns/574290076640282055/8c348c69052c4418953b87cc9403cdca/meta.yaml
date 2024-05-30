@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/rowes/Documents/GitHub/Projects/Projects/FoodClassifier_Testing/mlruns/574290076640282055/8c348c69052c4418953b87cc9403cdca/artifacts
+end_time: 1716936760575
+entry_point_name: ''
+experiment_id: '574290076640282055'
+lifecycle_stage: active
+run_id: 8c348c69052c4418953b87cc9403cdca
+run_name: lyrical-whale-454
+run_uuid: 8c348c69052c4418953b87cc9403cdca
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716936744191
+status: 3
+tags: []
+user_id: rowes

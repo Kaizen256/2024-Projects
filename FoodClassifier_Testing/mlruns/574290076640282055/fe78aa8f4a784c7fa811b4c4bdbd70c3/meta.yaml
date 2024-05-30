@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/rowes/Documents/GitHub/Projects/Projects/FoodClassifier_Testing/mlruns/574290076640282055/fe78aa8f4a784c7fa811b4c4bdbd70c3/artifacts
+end_time: 1716940926940
+entry_point_name: ''
+experiment_id: '574290076640282055'
+lifecycle_stage: active
+run_id: fe78aa8f4a784c7fa811b4c4bdbd70c3
+run_name: casual-stag-806
+run_uuid: fe78aa8f4a784c7fa811b4c4bdbd70c3
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716940689657
+status: 3
+tags: []
+user_id: rowes

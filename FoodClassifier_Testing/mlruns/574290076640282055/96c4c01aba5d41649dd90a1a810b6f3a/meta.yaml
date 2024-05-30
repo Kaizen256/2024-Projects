@@ -1,0 +1,16 @@
+artifact_uri: file:///C:/Users/rowes/Documents/GitHub/Projects/Projects/FoodClassifier_Testing/mlruns/574290076640282055/96c4c01aba5d41649dd90a1a810b6f3a/artifacts
+deleted_time: 1716929819302
+end_time: 1716929657762
+entry_point_name: ''
+experiment_id: '574290076640282055'
+lifecycle_stage: deleted
+run_id: 96c4c01aba5d41649dd90a1a810b6f3a
+run_name: debonair-yak-783
+run_uuid: 96c4c01aba5d41649dd90a1a810b6f3a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716929637724
+status: 3
+tags: []
+user_id: rowes

@@ -1,0 +1,16 @@
+artifact_uri: file:///C:/Users/rowes/Documents/GitHub/Projects/Projects/FoodClassifier_Testing/mlruns/574290076640282055/35a7ca6589de4bcdafcd16862e1832e1/artifacts
+deleted_time: 1716936110697
+end_time: 1716931073958
+entry_point_name: ''
+experiment_id: '574290076640282055'
+lifecycle_stage: deleted
+run_id: 35a7ca6589de4bcdafcd16862e1832e1
+run_name: classy-swan-26
+run_uuid: 35a7ca6589de4bcdafcd16862e1832e1
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716929965315
+status: 3
+tags: []
+user_id: rowes

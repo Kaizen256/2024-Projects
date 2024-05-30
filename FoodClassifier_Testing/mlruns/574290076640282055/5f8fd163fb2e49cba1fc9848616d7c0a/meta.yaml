@@ -1,0 +1,16 @@
+artifact_uri: file:///C:/Users/rowes/Documents/GitHub/Projects/Projects/FoodClassifier_Testing/mlruns/574290076640282055/5f8fd163fb2e49cba1fc9848616d7c0a/artifacts
+deleted_time: 1716936110696
+end_time: 1716932556082
+entry_point_name: ''
+experiment_id: '574290076640282055'
+lifecycle_stage: deleted
+run_id: 5f8fd163fb2e49cba1fc9848616d7c0a
+run_name: smiling-ray-314
+run_uuid: 5f8fd163fb2e49cba1fc9848616d7c0a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716931462046
+status: 3
+tags: []
+user_id: rowes

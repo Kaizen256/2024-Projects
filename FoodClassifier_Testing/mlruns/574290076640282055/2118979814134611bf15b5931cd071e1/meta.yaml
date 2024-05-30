@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/rowes/Documents/GitHub/Projects/Projects/FoodClassifier_Testing/mlruns/574290076640282055/2118979814134611bf15b5931cd071e1/artifacts
+end_time: 1716936121539
+entry_point_name: ''
+experiment_id: '574290076640282055'
+lifecycle_stage: active
+run_id: 2118979814134611bf15b5931cd071e1
+run_name: effnetb0_data_10_percent_10_epochs
+run_uuid: 2118979814134611bf15b5931cd071e1
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716936121481
+status: 3
+tags: []
+user_id: rowes
