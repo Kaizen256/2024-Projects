@@ -7,6 +7,13 @@ import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 import sys
 
+if torch.cuda.is_available():
+    device = torch.device('cuda')
+    print("GPU is available. Using GPU for computation.")
+else:
+    device = torch.device('cpu')
+    print("No GPU available. Using CPU for computation.")
+
 train_data = datasets.MNIST(
     root="data",
     train=True,
@@ -76,7 +83,7 @@ class Convolutional(nn.Module):
 
 model = Convolutional(input_shape=1,
                        hidden_units=10,
-                         output_shape=10).to("cuda")
+                         output_shape=10).to(device)
 
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(params=model.parameters(),
@@ -87,7 +94,7 @@ def train_step(model: torch.nn.Module,
                loss_fn: torch.nn.Module,
                optimizer: torch.optim.Optimizer,
                accuracy_fn,
-               device: torch.device = "cuda"):
+               device: torch.device = device):
     train_loss, train_acc = 0,0
     model.to(device)
     for batch, (X, y) in enumerate(data_loader):
@@ -110,7 +117,7 @@ def test_step(data_loader: torch.utils.data.DataLoader,
               model: torch.nn.Module,
               loss_fn: torch.nn.Module,
               accuracy_fn,
-              device: torch.device = "cuda"):
+              device: torch.device = device):
     test_loss, test_acc = 0, 0
     model.to(device)
     model.eval()
@@ -132,12 +139,13 @@ def accuracy_fn(y_true, y_pred):
     acc = (correct / len(y_pred)) * 100 
     return acc
 
-def save_checkpoint(state, filename="MNIST_Checkpoint.pth.tar"):
+def save_checkpoint(state, filename="MNIST_Checkpoint2.pth.tar"):
     print("Checkpoint")
     torch.save(state, filename)
 
-def load_checkpoint(checkpoint):
+def load_checkpoint(filepath):
     print("Loading Checkpoint")
+    checkpoint = torch.load(filepath, map_location=torch.device('cpu'))
     model.load_state_dict(checkpoint['state_dict'])
     optimizer.load_state_dict(checkpoint['optimizer'])
 
@@ -146,10 +154,10 @@ prediction_shit = True
 epochs = 30
 
 if Load_model:
-    load_checkpoint(torch.load("MNIST_Checkpoint.pth.tar"))
+    load_checkpoint("MNIST_Checkpoint2.pth.tar")
 
 if prediction_shit:
-    def make_predictions(model: torch.nn.Module, data: list, device: torch.device = "cuda"):
+    def make_predictions(model: torch.nn.Module, data: list, device: torch.device = device):
         pred_probs = []
         model.eval()
         with torch.inference_mode():
@@ -196,11 +204,11 @@ for epoch in range(epochs):
         loss_fn=loss_fn,
         optimizer=optimizer,
         accuracy_fn=accuracy_fn,
-        device="cuda"
+        device=device
     )
     test_step(data_loader=test_dataloader,
         model=model,
         loss_fn=loss_fn,
         accuracy_fn=accuracy_fn,
-        device="cuda"
+        device=device
     )

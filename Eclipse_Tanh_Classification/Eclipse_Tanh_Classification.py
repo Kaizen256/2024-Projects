@@ -6,7 +6,13 @@ import matplotlib.pyplot as plt
 from sklearn.datasets import make_moons
 import numpy as np
 
-device = "cuda"
+if torch.cuda.is_available():
+    device = torch.device('cuda')
+    print("GPU is available. Using GPU for computation.")
+else:
+    device = torch.device('cpu')
+    print("No GPU available. Using CPU for computation.")
+    
 RS = 42
 
 X, y = make_moons(n_samples=3000, shuffle=True, noise=0.07, random_state=RS)
