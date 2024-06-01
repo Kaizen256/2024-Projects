@@ -1,0 +1,30 @@
+channels:
+- conda-forge
+dependencies:
+- python=3.10.6
+- pip<=24.0
+- pip:
+  - mlflow==2.12.2
+  - accelerate==0.18.0
+  - attrs==23.1.0
+  - cloudpickle==3.0.0
+  - matplotlib==3.7.2
+  - numpy==1.23.5
+  - omegaconf==2.2.3
+  - packaging==23.1
+  - pandas==2.1.0
+  - protobuf==4.25.3
+  - pytorch-lightning==1.9.4
+  - pyyaml==6.0.1
+  - requests==2.31.0
+  - safetensors==0.3.1
+  - scipy==1.11.2
+  - sentencepiece==0.1.99
+  - soundfile==0.12.1
+  - tb-nightly==2.15.0a20230911
+  - tensorflow-intel==2.16.1
+  - torch==2.0.1
+  - torchaudio==2.0.2
+  - torchvision==0.15.2
+  - transformers==4.25.1
+name: mlflow-env

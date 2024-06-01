@@ -48,7 +48,7 @@ def download_data(source: str, destination: str, remove_source: bool = True) -> 
     return image_path
 
 def main():
-    mlflow.set_experiment("EfficientNet Experiments")
+    mlflow.set_experiment("EfficientNet Model to use")
     data_10_percent_path = download_data(source="https://github.com/mrdbourke/pytorch-deep-learning/raw/main/data/pizza_steak_sushi.zip",
                                         destination="pizza_steak_sushi")
 
@@ -139,51 +139,59 @@ def main():
         print(f"[INFO] Created new {model.name} model.")
         return model
 
-    num_epochs = [10, 10]
+    num_epochs = 10
 
     models = ["effnetb0", "effnetb2"]
+    model_name = "effnetb2"
+    dataloader_name = "data_20_percent"
 
     train_dataloaders = {"data_10_percent": train_dataloader_10_percent,
                             "data_20_percent": train_dataloader_20_percent}
 
     experiment_number = 0
     from Classifier import train
-    for dataloader_name, train_dataloader in train_dataloaders.items():
-        for epochs in num_epochs:
-            for model_name in models:
-                experiment_number += 1
-                print(f"[INFO] Experiment number: {experiment_number}")
-                print(f"[INFO] Model: {model_name}")
-                print(f"[INFO] DataLoader: {dataloader_name}")
-                print(f"[INFO] Number of epochs: {epochs}")
+    for epochs in [num_epochs]:
+        experiment_number += 1
+        print(f"[INFO] Experiment number: {experiment_number}")
+        print(f"[INFO] Model: {model_name}")
+        print(f"[INFO] DataLoader: {dataloader_name}")
+        print(f"[INFO] Number of epochs: {epochs}")
 
-                if model_name == "effnetb0":
-                    model = create_effnetb0()
-                else:
-                    model = create_effnetb2()
+        if model_name == "effnetb0":
+            model = create_effnetb0()
+        else:
+            model = create_effnetb2()
 
-                loss_fn = nn.CrossEntropyLoss()
-                optimizer = torch.optim.Adam(params=model.parameters(), lr=0.001)
+        loss_fn = nn.CrossEntropyLoss()
+        optimizer = torch.optim.Adam(params=model.parameters(), lr=0.001)
 
-                if mlflow.active_run():
-                    mlflow.end_run()
+        if mlflow.active_run():
+            mlflow.end_run()
 
-                run_name = f"{model_name}_{dataloader_name}_{epochs}_epochs"
-                with mlflow.start_run(run_name=run_name) as run:
-                    mlflow.log_param("model_name", model_name)
-                    mlflow.log_param("dataloader_name", dataloader_name)
-                    mlflow.log_param("epochs", epochs)
-                    mlflow.log_param("batch_size", BATCH_SIZE)
+        run_name = f"{model_name}_{dataloader_name}_{epochs}_epochs"
+        with mlflow.start_run(run_name=run_name) as run:
+            mlflow.log_param("model_name", model_name)
+            mlflow.log_param("dataloader_name", dataloader_name)
+            mlflow.log_param("epochs", epochs)
+            mlflow.log_param("batch_size", BATCH_SIZE)
 
-                train(model=model,
-                    train_dataloader=train_dataloader,
-                    test_dataloader=test_dataloader, 
-                    optimizer=optimizer,
-                    loss_fn=loss_fn,
-                    epochs=epochs,
-                    device=device)
+        train(model=model,
+            train_dataloader=train_dataloader_20_percent,
+            test_dataloader=test_dataloader, 
+            optimizer=optimizer,
+            loss_fn=loss_fn,
+            epochs=epochs,
+            device=device)
                     
-                mlflow.pytorch.log_model(model, "model")
+        mlflow.pytorch.log_model(model, "model")
+
+        from going_modular.going_modular.utils import save_model
+
+        save_filepath = f"07_{model_name}_{dataloader_name}_{epochs}_epochs.pth"
+        save_model(model=model,
+                    target_dir="models",
+                    model_name=save_filepath)
+        print("-"*50 + "\n")
 
 if __name__ == "__main__":
     main()

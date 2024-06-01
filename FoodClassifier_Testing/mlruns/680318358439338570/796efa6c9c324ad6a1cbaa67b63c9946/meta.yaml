@@ -1,0 +1,16 @@
+artifact_uri: file:///C:/Users/rowes/Documents/GitHub/Projects/Projects/FoodClassifier_Testing/mlruns/680318358439338570/796efa6c9c324ad6a1cbaa67b63c9946/artifacts
+deleted_time: 1717228480745
+end_time: 1717228200168
+entry_point_name: ''
+experiment_id: '680318358439338570'
+lifecycle_stage: deleted
+run_id: 796efa6c9c324ad6a1cbaa67b63c9946
+run_name: clumsy-fly-538
+run_uuid: 796efa6c9c324ad6a1cbaa67b63c9946
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717228184575
+status: 3
+tags: []
+user_id: rowes

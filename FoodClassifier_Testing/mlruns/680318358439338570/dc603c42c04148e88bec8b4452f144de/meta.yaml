@@ -1,0 +1,16 @@
+artifact_uri: file:///C:/Users/rowes/Documents/GitHub/Projects/Projects/FoodClassifier_Testing/mlruns/680318358439338570/dc603c42c04148e88bec8b4452f144de/artifacts
+deleted_time: 1717228480745
+end_time: 1717228356822
+entry_point_name: ''
+experiment_id: '680318358439338570'
+lifecycle_stage: deleted
+run_id: dc603c42c04148e88bec8b4452f144de
+run_name: indecisive-lark-101
+run_uuid: dc603c42c04148e88bec8b4452f144de
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717228344938
+status: 3
+tags: []
+user_id: rowes
