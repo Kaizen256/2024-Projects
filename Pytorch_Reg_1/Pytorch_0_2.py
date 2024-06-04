@@ -2,7 +2,12 @@ import torch
 from torch import nn
 import matplotlib.pyplot as plt
 
-device = "cuda"
+if torch.cuda.is_available():
+    device = torch.device('cuda')
+    print("GPU is available. Using GPU for computation.")
+else:
+    device = torch.device('cpu')
+    print("No GPU available. Using CPU for computation.")
 
 # Create weight and bias
 weight = 0.7

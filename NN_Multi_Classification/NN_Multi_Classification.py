@@ -7,8 +7,13 @@ import numpy as np
 
 NUM_CLASSES = 4
 NUM_FEATURES = 2
-RANDOM_SEED = 42
-device = "cuda"
+RANDOM_SEED = 43
+if torch.cuda.is_available():
+    device = torch.device('cuda')
+    print("GPU is available. Using GPU for computation.")
+else:
+    device = torch.device('cpu')
+    print("No GPU available. Using CPU for computation.")
 
 X_blob, y_blob = make_blobs(n_samples=1000,
                             n_features=NUM_FEATURES,

@@ -5,7 +5,13 @@ from sklearn.model_selection import train_test_split
 import pandas as pd
 import matplotlib.pyplot as plt
 
-device = "cuda"
+if torch.cuda.is_available():
+    device = torch.device('cuda')
+    print("GPU is available. Using GPU for computation.")
+else:
+    device = torch.device('cpu')
+    print("No GPU available. Using CPU for computation.")
+    
 n_samples = 1000
 
 X, y = make_circles(n_samples,
