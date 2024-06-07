@@ -15,9 +15,8 @@ from pathlib import Path
 import requests
 from typing import Dict, List
 from tqdm.auto import tqdm
-from engine import train_step, test_step
-import engine
-import data_setup
+from going_modular.going_modular.engine import train_step, test_step
+from going_modular.going_modular import data_setup, engine
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 
 if torch.cuda.is_available():
@@ -27,7 +26,7 @@ else:
     print("No GPU available. Using CPU for computation.")
 
 def main():
-    mlflow.set_experiment("Food101 Effnetb7")
+    mlflow.set_experiment("Food101 ViT")
     transform = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.ToTensor(),
@@ -60,8 +59,8 @@ def main():
                                                 num_workers=os.cpu_count(),
                                                 pin_memory=True)
 
-    weights = torchvision.models.EfficientNet_B2_Weights.DEFAULT
-    model = torchvision.models.efficientnet_b2(weights=weights).to(device)
+    weights = torchvision.models.ViT_B_16_Weights.DEFAULT
+    model = torchvision.models.vit_b_16(weights=weights).to(device)
     """
     print(summary(model=model, 
             input_size=(32, 3, 224, 224),
@@ -71,19 +70,17 @@ def main():
     ))
     """
 
-    for param in model.features.parameters():
+    for param in model.parameters():
         param.requires_grad = False
 
-    model.classifier = torch.nn.Sequential(
-        torch.nn.Dropout(p=0.2, inplace=True),
-        torch.nn.Linear(in_features=1408,
-                        out_features=101,
-                        bias=True)).to(device)
+    torch.manual_seed(42)
+    torch.cuda.manual_seed(42)
+    model.heads = nn.Linear(in_features=768, out_features=101).to(device)
 
     loss_fn = nn.CrossEntropyLoss().to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=0.03)
 
-    def save_checkpoint(state, filename="CLASSIFIER3.pth.tar"):
+    def save_checkpoint(state, filename="CLASSIFIERViT.pth.tar"):
         print("Checkpoint")
         torch.save(state, filename)
 
