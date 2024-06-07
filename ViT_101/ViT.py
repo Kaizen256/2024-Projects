@@ -35,8 +35,8 @@ def main():
         batch_size=BS
     )
 
-    #image_batch, label_batch = next(iter(train_dataloader))
-    #image, label = image_batch[0], label_batch[0]
+    image_batch, label_batch = next(iter(train_dataloader))
+    image, label = image_batch[0], label_batch[0]
     #plt.imshow(image.permute(1, 2, 0))
     #plt.axis(False)
     #plt.show()
@@ -86,6 +86,19 @@ def main():
 #             col_names=["input_size", "output_size", "num_params", "trainable"],
 #             col_width=20,
 #             row_settings=["var_names"]))
+
+    patchify = PatchEmbedding(in_channels=3,
+                          patch_size=16,
+                          embedding_dim=768)
+    patch_embedded_image = patchify(image.unsqueeze(0))
+    batch_size = patch_embedded_image.shape[0]
+    embedding_dimension = patch_embedded_image.shape[-1]
+
+    class_token = nn.Parameter(torch.ones(batch_size, 1, embedding_dimension),
+                               requires_grad=True)
+    
+    
+
 
 if __name__ == "__main__":
     main()
