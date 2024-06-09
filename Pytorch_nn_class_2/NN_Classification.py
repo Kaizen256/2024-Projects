@@ -98,7 +98,7 @@ else:
   with open("helper_functions.py", "wb") as f:
     f.write(request.content)
 
-from helper_functions import plot_predictions, plot_decision_boundary
+from Food_101_Deploy.helper_functions import plot_predictions, plot_decision_boundary
 
 plt.figure(figsize=(12, 6))
 plt.subplot(1, 2, 1)

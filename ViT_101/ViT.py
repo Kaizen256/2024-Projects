@@ -7,7 +7,7 @@ from torch import nn
 from torchvision import transforms
 from torchinfo import summary
 from going_modular.going_modular import data_setup, engine
-from helper_functions import download_data, set_seeds, plot_loss_curves
+from Food_101_Deploy.helper_functions import download_data, set_seeds, plot_loss_curves
 
 def main():
 

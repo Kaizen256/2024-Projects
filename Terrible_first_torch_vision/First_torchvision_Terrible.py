@@ -4,7 +4,7 @@ import torchvision
 from torchvision import datasets
 from torchvision.transforms import ToTensor
 import matplotlib.pyplot as plt
-from helper_functions import accuracy_fn
+from Food_101_Deploy.helper_functions import accuracy_fn
 
 if torch.cuda.is_available():
     device = torch.device('cuda')
