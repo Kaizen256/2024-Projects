@@ -15,9 +15,9 @@ from pathlib import Path
 import requests
 from typing import Dict, List
 from tqdm.auto import tqdm
-from engine import train_step, test_step
-import engine
-import data_setup
+from going_modular.going_modular.engine import train_step, test_step
+from going_modular.going_modular import data_setup, engine
+import sys
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 
 if torch.cuda.is_available():
@@ -92,10 +92,11 @@ def main():
         model.load_state_dict(checkpoint['state_dict'])
         optimizer.load_state_dict(checkpoint['optimizer'])
 
-    Load_model=False
+    Load_model=True
 
     if Load_model:
-        load_checkpoint(torch.load("CLASSIFIER.pth.tar"))
+        load_checkpoint(torch.load("CLASSIFIERViT.pth.tar"))
+        sys.exit(1)
 
     def train(model: torch.nn.Module,
           train_dataloader: torch.utils.data.DataLoader,
