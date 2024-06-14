@@ -9,7 +9,7 @@ from torch import nn
 import matplotlib.pyplot as plt
 import random
 
-device = "cpu"
+device = torch.device("cpu")
 
 image_path = Path("data/food-101/images/MI")
 image_files = [os.path.join(image_path, filename) for filename in os.listdir(image_path) if filename.endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp'))]
@@ -31,13 +31,15 @@ model.classifier = nn.Sequential(
 ).to(device)
 from pathlib import Path
 effnetb2_food101_model_path = "effnetb2_food101.pth" 
-pretrained_effnetb2_food101_model_size = Path("models", effnetb2_food101_model_path).stat().st_size // (1024*1024)
-print(f"Pretrained EffNetB2 feature extractor Food101 model size: {pretrained_effnetb2_food101_model_size} MB")
-def load_checkpoint(checkpoint):
-        print("Loading Checkpoint")
-        model.load_state_dict(checkpoint['state_dict'])
-load_checkpoint(torch.load("effnetb2_food101.pth"))
+model_path = Path("models", effnetb2_food101_model_path)
+checkpoint = torch.load(model_path, map_location=device)
 
+if 'state_dict' in checkpoint:
+    model.load_state_dict(checkpoint['state_dict'])
+else:
+    model.load_state_dict(checkpoint)
+
+model.eval()
 for i in random_image_paths:
     pred_and_plot_image(model=model,
                         class_names=class_names,
