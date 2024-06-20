@@ -66,29 +66,6 @@ epochs = 151
 X_train, y_train = X_train.to(device), y_train.to(device)
 X_test, y_test = X_test.to(device), y_test.to(device)
 
-for epoch in range(epochs):
-    model.train()
-    y_logits = model(X_train)
-    y_pred = torch.softmax(y_logits, dim=1).argmax(dim=1)
-
-    loss = loss_fn(y_logits, y_train)
-    acc = accuracy_fn(y_true=y_train,
-                      y_pred=y_pred)
-    
-    optimizer.zero_grad()
-    loss.backward()
-    optimizer.step()
-    model.eval()
-    with torch.inference_mode():
-        test_logits = model(X_test)
-        test_pred = torch.softmax(test_logits, dim=1).argmax(dim=1)
-        test_loss = loss_fn(test_logits, y_test)
-        test_acc = accuracy_fn(y_true=y_test, 
-                               y_pred=test_pred)
-
-    if epoch % 10 == 0:
-        print(f"Epoch: {epoch} | Loss: {loss:.5f}, Acc: {acc:.2f}% | Test Loss: {test_loss:.5f}, Test Acc: {test_acc:.2f}%")
-
 def plot_decision_boundary(model, X, y):
     model.to("cpu")
     X, y = X.to("cpu"), y.to("cpu")
@@ -114,6 +91,40 @@ def plot_decision_boundary(model, X, y):
     plt.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap=plt.cm.RdYlBu)
     plt.xlim(xx.min(), xx.max())
     plt.ylim(yy.min(), yy.max())
+
+for epoch in range(epochs):
+    model.train()
+    y_logits = model(X_train)
+    y_pred = torch.softmax(y_logits, dim=1).argmax(dim=1)
+
+    loss = loss_fn(y_logits, y_train)
+    acc = accuracy_fn(y_true=y_train,
+                      y_pred=y_pred)
+    
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+    model.eval()
+    with torch.inference_mode():
+        test_logits = model(X_test)
+        test_pred = torch.softmax(test_logits, dim=1).argmax(dim=1)
+        test_loss = loss_fn(test_logits, y_test)
+        test_acc = accuracy_fn(y_true=y_test, 
+                               y_pred=test_pred)
+
+    if epoch % 10 == 0:
+        print(f"Epoch: {epoch} | Loss: {loss:.5f}, Acc: {acc:.2f}% | Test Loss: {test_loss:.5f}, Test Acc: {test_acc:.2f}%")
+    
+    if epoch % 2 == 0 and epoch <= 40:
+        plt.figure(figsize=(12, 6))
+        plt.subplot(1, 2, 1)
+        plt.title(f"Train Epoch: {epoch}")
+        plot_decision_boundary(model, X_train, y_train)
+        plt.subplot(1, 2, 2)
+        plt.title(f"Test Epoch: {epoch}")
+        plot_decision_boundary(model, X_test, y_test)
+        plt.show()
+
      
 plt.figure(figsize=(12, 6))
 plt.subplot(1, 2, 1)
