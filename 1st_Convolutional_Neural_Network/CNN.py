@@ -163,17 +163,19 @@ def save_checkpoint(state, filename="CNN_Checkpoint.pth.tar"):
     print("Checkpoint")
     torch.save(state, filename)
 
-def load_checkpoint(checkpoint):
-    print("Loading Checkpoint")
-    model.load_state_dict(checkpoint['state_dict'])
-    optimizer.load_state_dict(checkpoint['optimizer'])
-
 Load_model = True #LOAD MODEL OR CREATE A NEW ONE
 prediction_shit = True # MAKE PREDICTIONS OR NAH
 epochs = 31
-
+from pathlib import Path
 if Load_model:
-    load_checkpoint(torch.load("CNN_Checkpoint.pth.tar"))
+    effnetb2_food101_model_path = "CNN_Checkpoint.pth.tar" 
+    model_path = Path("models", effnetb2_food101_model_path)
+    checkpoint = torch.load(model_path, map_location=device)
+    print("Loading Checkpoint")
+    if 'state_dict' in checkpoint:
+        model.load_state_dict(checkpoint['state_dict'])
+    else:
+        model.load_state_dict(checkpoint)
 if prediction_shit:
     def make_predictions(model: torch.nn.Module, data: list, device: torch.device = device):
         pred_probs = []
