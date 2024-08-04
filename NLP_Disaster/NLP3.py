@@ -1077,7 +1077,6 @@ class DisasterDetector:
         
         return model
     
-    
     def train(self, X):
         
         for fold, (trn_idx, val_idx) in enumerate(skf.split(X['text_cleaned'], X['keyword'])):
