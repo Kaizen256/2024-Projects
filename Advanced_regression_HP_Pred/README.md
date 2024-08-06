@@ -1,0 +1,1 @@
+One of my first ML projects. I followed a tutorial for this and it taught me simple things like filling in NAN values and validation. It used simple linear regression.

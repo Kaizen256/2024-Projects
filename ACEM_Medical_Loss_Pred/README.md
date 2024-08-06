@@ -1,0 +1,1 @@
+This was one of the first ML projects I have created. It is extremely simple and I followed a tutorial for it. It was from a medical dataset and used simple linear regression. It also taught me some simple things like scaling, one hot encoding, and sorting between categorical and numerical data.

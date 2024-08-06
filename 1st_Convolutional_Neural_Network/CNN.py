@@ -5,6 +5,7 @@ from torchvision import datasets
 from torchvision.transforms import ToTensor
 import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
+import torch
 import sys
 
 if torch.cuda.is_available():

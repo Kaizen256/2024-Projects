@@ -150,13 +150,13 @@ def load_checkpoint(filepath):
     optimizer.load_state_dict(checkpoint['optimizer'])
 
 Load_model = True
-prediction_shit = True
+prediction_T= True
 epochs = 30
 
 if Load_model:
     load_checkpoint("MNIST_Checkpoint2.pth.tar")
 
-if prediction_shit:
+if prediction_T:
     def make_predictions(model: torch.nn.Module, data: list, device: torch.device = device):
         pred_probs = []
         model.eval()

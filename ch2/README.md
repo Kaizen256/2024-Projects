@@ -1,0 +1,1 @@
+Simple beginner project of classifying iris petals. I found through a tutorial online. It showed me the difference between different models and how they perform, such as adaline stochastic gradient descent.

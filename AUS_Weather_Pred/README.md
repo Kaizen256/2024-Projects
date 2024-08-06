@@ -1,0 +1,1 @@
+One of my first ML projects. Followed a tutorial and used logistic regression. Taught me about parquets, though I never used them again. Used a confusion matrix to visualize prediction, model got a 84.22% accuracy which isn't great but it was a start.

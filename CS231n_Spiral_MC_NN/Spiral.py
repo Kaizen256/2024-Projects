@@ -61,7 +61,7 @@ optimizer = torch.optim.Adam(model.parameters(),
                             lr=0.05)
 
 torch.manual_seed(42)
-epochs = 151
+epochs = 150
 
 X_train, y_train = X_train.to(device), y_train.to(device)
 X_test, y_test = X_test.to(device), y_test.to(device)
@@ -115,7 +115,7 @@ for epoch in range(epochs):
     if epoch % 10 == 0:
         print(f"Epoch: {epoch} | Loss: {loss:.5f}, Acc: {acc:.2f}% | Test Loss: {test_loss:.5f}, Test Acc: {test_acc:.2f}%")
     
-    if epoch % 2 == 0 and epoch <= 40:
+    if epoch % 50 == 0:
         plt.figure(figsize=(12, 6))
         plt.subplot(1, 2, 1)
         plt.title(f"Train Epoch: {epoch}")

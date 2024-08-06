@@ -1,0 +1,1 @@
+Really simple linear regression and one of my first ml projects. Seperated columns and scaled numerical data.
