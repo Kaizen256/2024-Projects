@@ -1,3 +1,9 @@
 Food_Classifier/CLASSIFIERViT.pth.tar
 Food_Classifier/mlruns/0/meta.yaml
 Food_Classifier/mlruns/315228605252170757/meta.yaml
+Binary_Mushrooms/one_million_mushrooms.csv
+Binary_Mushrooms/sample_submission.csv
+Binary_Mushrooms/secondary_data.csv
+Binary_Mushrooms/submission9.csv
+Binary_Mushrooms/test.csv
+Binary_Mushrooms/train.csv

@@ -49,6 +49,8 @@ X_train_tensor = torch.tensor(X_train, dtype=torch.float32)
 y_train_tensor = torch.tensor(y_train.values, dtype=torch.float32).unsqueeze(1)
 X_test_tensor = torch.tensor(X_test, dtype=torch.float32)
 
+
+
 class AdvancedTitanicNN(nn.Module):
     def __init__(self):
         super(AdvancedTitanicNN, self).__init__()
