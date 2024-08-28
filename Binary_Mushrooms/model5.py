@@ -23,7 +23,7 @@ from sklearn.model_selection import GridSearchCV, cross_val_score
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import accuracy_score, roc_auc_score, roc_curve, auc, confusion_matrix, matthews_corrcoef, make_scorer
 import time
-random_state = 64
+random_state = 67
 
 train = pd.read_csv('train.csv', index_col=[0])
 train2 = pd.read_csv('one_million_mushrooms.csv', sep=";")
@@ -199,4 +199,4 @@ preds_test =  meta_model.predict(test_preds[selected_models])
 preds_test = label_encoder.inverse_transform(preds_test)
 output = pd.DataFrame({'id': test_df.index,
                        'class': preds_test})
-output.to_csv('submission10.csv', index=False)
+output.to_csv('submission12.csv', index=False)

@@ -7,3 +7,9 @@ Binary_Mushrooms/secondary_data.csv
 Binary_Mushrooms/submission9.csv
 Binary_Mushrooms/test.csv
 Binary_Mushrooms/train.csv
+ISIC_2024_Skin_Cancer/train-image
+ISIC_2024_Skin_Cancer/sample_submission.csv
+ISIC_2024_Skin_Cancer/test-metadata.csv
+ISIC_2024_Skin_Cancer/test-image.hdf5
+ISIC_2024_Skin_Cancer/train-image.hdf5
+ISIC_2024_Skin_Cancer/train-metadata.csv
