@@ -168,7 +168,7 @@ def read_data(path):
         .with_columns(
             color_consistency              = pl.col('tbp_lv_stdL') / pl.col('tbp_lv_Lext'),
             consistency_color              = pl.col('tbp_lv_stdL') * pl.col('tbp_lv_Lext') / (pl.col('tbp_lv_stdL') + pl.col('tbp_lv_Lext')),
-            size_age_interaction           = pl.col('clin_size_long_diam_mm') * pl.col('age_approx'),
+            size_age_interaction           = pl.col('clin_size_long_diam_mm') * pl.col('age_approx'),  
             hue_color_std_interaction      = pl.col('tbp_lv_H') * pl.col('tbp_lv_color_std_mean'),
             lesion_severity_index          = (pl.col('tbp_lv_norm_border') + pl.col('tbp_lv_norm_color') + pl.col('tbp_lv_eccentricity')) / 3,
             shape_complexity_index         = pl.col('border_complexity') + pl.col('lesion_shape_index'),
